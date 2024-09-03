@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+    {% load static %}
+    {% block title %}View{% endblock %}
+
+    {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .container-fluid{
+        background-color: black;
+        color: white;
+    }
+    .img1 {
+        width: 100%; /* Ensures the image takes up the full width of its container */
+        height: 100%; /* Ensures the image takes up the full height of its container */
+        object-fit: cover; /* Ensures the image covers the container without distorting */
+        display: block; /* Removes any small space caused by inline-block elements */
+        margin: 0; /* Removes any default margins */
+        padding: 0; /* Removes any default padding */
+    }
+    .card {
+        width: 100%;
+        height: 350px; /* Fixed height for the card */
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .card-img-top {
+        height: 200px; /* Fixed height for the image */
+        object-fit: cover; /* Ensures the image covers the container */
+    }
+    
+    .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content vertically */
+        padding: 1rem;
+        text-align: center; /* Center text horizontally */
+    }
+    .button1{
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 15%;
+    }
+     button {
+        margin-top: 1rem; /* Space between title and button */
+        background-color: #007bff; /* Bootstrap primary button color */
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+    .del{
+        background-color: rgb(209, 86, 86);
+        color: white;
+    }
+    
+</style>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6 p-0">
+                <img class="img1" src="{% static 'img/pancake.jpg' %}" alt="">
+            </div>
+            <div class="col-6">
+                <center>
+                    <h4>Add your recipe here!</h4>
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="dname">Dish name</label>
+                        <input type="text" name="dname">
+                        <br><br>
+                        
+                        <label for="dimg">Dish image</label>
+                        <input type="file" name="dimg">
+                        <br><br>
+                        
+                        <label for="dingre">Ingredients</label>
+                        <br>
+                        <textarea id="dingre" name="dingre" rows="4" cols="30"></textarea>
+                        <br><br>
+                        
+                        <label for="dproc">Procedure</label>
+                        <br>
+                        <textarea name="dproc" rows="7" cols="40"></textarea>
+                        <br><br>
+                        
+                        <input type="submit">
+                    </form>
+                    <br>
+                </center>
+            </div>
+        </div>
+    </div>
+    
+    <br><br>
+
+
+    <div class="container mt-5">
+        <div class="row">
+            {% for x in data %}
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                <div class="card" style="width: 100%; height: 350px;"> <!-- Fixed height for the card -->
+                    <img src="{{ x.img.url }}" class="card-img-top img-fluid" alt="..." style="height: 200px; object-fit: cover;"> <!-- Fixed height for the image -->
+                    <div class="card-body">
+                        <h5 class="card-title">{{ x.name }}</h5>
+                    </div>
+                    <div class="button1">
+                        <a href="/edit/{{ x.id }}"><Button btn btn-primary>Edit</Button></a>
+                        <a href="/delete/{{ x.id }}"><Button class="del">Delete</Button></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+
+
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+    {% load static %}
+    {% block title %}View{% endblock %}
+
+    {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .heading{
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    
+    }
+    .card {
+        width: 100%;
+        height: 350px; /* Fixed height for the card */
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ddd; /* Border for visual separation */
+        border-radius: 0.25rem; /* Rounded corners */
+        overflow: hidden; /* Ensures content doesn't overflow */
+    }
+    
+    .card-img-top {
+        height: 200px; /* Fixed height for the image */
+        object-fit: cover; /* Ensures the image covers the container */
+    }
+    
+    .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content vertically */
+        padding: 1rem;
+        text-align: center; /* Center text horizontally */
+    }
+    
+    .card-body button {
+        margin-top: 1rem; /* Space between title and button */
+        background-color: #007bff; /* Bootstrap primary button color */
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+    
+    .card-body button:hover {
+        background-color: #0056b3; /* Darker color on hover */
+    }
+</style>
+<body>
+    <div class="heading">
+        <h5 style="padding-top: 2%; padding-bottom:1%">Add your Recipe here! </h5><br>
+    </div>
+    <div class="heading">
+        <a href="/add"><i style="font-weight: lighter;" class="fa-solid fa-plus fa-2x"></i></a>
+    </div>
+    <br><hr><br>
+    <center><br><h2>Recipies Available </h2></center>
+    <div class="container mt-5"> 
+        <div class="row">
+            {% for x in data %}
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                <div class="card">
+                    <img src="{{ x.img.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ x.name }}</h5>
+                        <a href="/full_recipe/{{ x.id }}">
+                            <button>View Recipe</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

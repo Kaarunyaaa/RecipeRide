@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+    {% load static %}
+    {% block title %}View{% endblock %}
+
+    {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .imgsize{
+        height: 20%;
+    }
+   
+    .img-fluid {
+        width: 100%;
+        height: 100%; /* Make sure the image fills the container */
+        object-fit: cover; /* Ensures the image covers the allocated space while maintaining aspect ratio */
+
+    }
+    .ingre{
+        justify-content: center;
+    }
+    
+</style>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8 img-container">
+                <img src="{{ img.url }}" alt="Recipe Image" class="img-fluid">
+            </div>
+            <div class="col-4 ingre">
+                <center>
+                    <br><br>
+                    <h2>Ingredients</h2>
+                    <br>
+                    <ul style="display: inline-block; text-align: left;">
+                    {% for ingredient in ingredients.splitlines %}
+                        <li>{{ ingredient }}</li>
+                    {% endfor %}
+                    </ul>
+                </center>
+            </div>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <center>
+                    <br>
+                    <h2>Procedure</h2>
+                    <br>
+                    <p>{{ procedure }}</p>
+                </center>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
+
+
+
+    
+
+    {% endblock %}
+</body>
+</html>
