@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if notifications %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% for notification in notifications %}
+            alert("New comment on your recipe '{{ notification.comment.recipe.name }}' by {{ notification.comment.user.username }}: '{{ notification.comment.content }}'");
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+</body>
+</html>

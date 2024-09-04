@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'user_base.html' %}
     {% load static %}
     {% block title %}View{% endblock %}
 
@@ -73,7 +73,7 @@
                     <img src="{{ x.img.url }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{ x.name }}</h5>
-                        <a href="/full_recipe/{{ x.id }}">
+                        <a href="/recipe/{{ x.id }}">
                             <button>View Recipe</button>
                         </a>
                     </div>

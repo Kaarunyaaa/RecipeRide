@@ -22,15 +22,16 @@ from recipeapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.home),
-    path('login/',views.login1),
-    path('signup/',views.signup1),
-    path('view/',views.view),
-    path('add/',views.adddish),
-    path('full_recipe/<recipe_id>/', views.recipe),
-    path('edit/<edit_id>/',views.edit),
-    path('delete/<delete_id>/',views.delete),
-    path('logout/',views.logout_view),
+    path('', views.home, name='home'),
+    path('login/', views.login1, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('signup/', views.signup1, name='signup'),
+    path('view/', views.view, name='view'),
+    path('add/', views.adddish, name='add'),
+    path('edit/<int:edit_id>/', views.edit, name='edit'),
+    path('delete/<int:delete_id>/', views.delete, name='delete'),
+    path('recipe/<int:recipe_id>/', views.recipe, name='recipe'),
+    path('notifications/', views.notifications, name='notifications'),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:

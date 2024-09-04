@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Add Bootstrap or any other CSS framework if needed -->
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+    }
+    
+    .card-header {
+        background-color: #f8f9fa;
+        padding: 0.75rem 1.25rem;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+</style>
+<body>
+    <div class="container mt-4">
+        <h1>Welcome, {{ user.username }}!</h1>
+
+        <!-- User Info -->
+        <div class="card mb-4">
+            <div class="card-header">
+                User Information
+            </div>
+            <div class="card-body">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <!-- Add more user info as needed -->
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Recent Activity
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for activity in recent_activity %}
+                        <li>{{ activity.description }} - {{ activity.timestamp }}</li>
+                    {% empty %}
+                        <li>No recent activity.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Notifications
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for notification in notifications %}
+                        <li>{{ notification.content }} - {{ notification.created_at }}</li>
+                    {% empty %}
+                        <li>No notifications.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Add more sections as needed -->
+    </div>
+    {% endblock %}
+</body>
+</html>
