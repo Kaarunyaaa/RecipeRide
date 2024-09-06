@@ -190,29 +190,31 @@ def profile_view(request,id):
     recipe=addrecipe.objects.filter(user=user)
     
     try:
-        profile = UserProfile.objects.get(user=request.user)
+        profile = UserProfile.objects.get(user=user)
     except UserProfile.DoesNotExist:
         profile = None
+    
+    following=Follow.objects.filter(follower=request.user.id)
+    following=list(following.values_list('followed',flat=True))
 
     context = {
         'profile': profile,
-        'dish':recipe,
         'data':user,
+        'dish':recipe,
+        'following':following,
     }
     return render(request, 'profile.html', context)
-
 @login_required
 def follow_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     if user != request.user:
         following=Follow.objects.filter(follower=request.user.id)
         #print(following)
-        print(list(following.values_list('followed',flat=True)))
-        print(following.exists())
-        if following.exists() and ( request.user.id in list(following.values_list('followed',flat=True))):
-            print("inside if")
-            Follow.filter(follower=request.user,followed=user).delete()   #kaaru   #harish
+        #print(list(following.values_list('followed',flat=True)))
+        #print(following.exists())
+        if following.exists() and ( user_id in list(following.values_list('followed',flat=True))):
+            #print("inside if")
+            Follow.objects.filter(follower=request.user,followed=user).delete()   #kaaru   #harish
         else:
             Follow.objects.create(follower=request.user,followed=user)
-    #return redirect('/profile', user_id=user_id)
-    return None
+    return redirect('profile_view',id=user)

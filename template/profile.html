@@ -156,10 +156,10 @@
         
         <div class="text-center mb-4">
             {% if user.is_authenticated %}
-                {% if user != profile_user %}
+                {% if user != data %}
                     <form action="{% url 'follow_user' data.id %}" method="post">
                         {% csrf_token %}
-                        {% if user in profile_user.followers.all %}
+                        {% if data.id in following %}
                             <button type="submit" class="btn btn-danger">Unfollow</button>
                         {% else %}
                             <button type="submit" class="btn btn-primary">Follow</button>
