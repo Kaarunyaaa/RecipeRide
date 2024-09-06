@@ -32,6 +32,9 @@ urlpatterns = [
     path('delete/<int:delete_id>/', views.delete, name='delete'),
     path('recipe/<int:recipe_id>/', views.recipe, name='recipe'),
     path('notifications/', views.notifications, name='notifications'),
+    path('user_recipe/<id>',views.user_recipe),
+    path('profile/<id>',views.profile_view),
+    path('follow/<int:user_id>/', views.follow_user, name='follow_user'),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:
