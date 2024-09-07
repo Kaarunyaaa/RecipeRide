@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import CustomUser, addrecipe, Comment, Notification,Follow,Saves
+from .models import CustomUser, addrecipe, Comment, Notification,Follow,Saves,Rating
 from .models import UserProfile
 from django.contrib.auth.models import User
-
+from .forms import RatingForm
 
 # Create your views here.
 def home(request):
@@ -76,7 +76,11 @@ def recipe(request, recipe_id):
             
     saveFlag=Saves.objects.filter(user=request.user,recipe=recipe).exists()
     
+    user_rating=None
+    if Rating.objects.filter(user=request.user,recipe=recipe).exists():
+        user_rating=Rating.objects.get(user=request.user,recipe=recipe)
     
+    form=RatingForm()
     comments = recipe.comments.all()
     context = {
         'img':recipe.img,
@@ -86,6 +90,9 @@ def recipe(request, recipe_id):
         'comments': comments,
         'posted_by':recipe.user, 
         'saveFlag':saveFlag,
+        'RatingForm':form,
+        'user_rating':user_rating,
+        'defaultRange':[1,2,3,4,5],
     }
     return render(request, 'recipe.html', context)
 

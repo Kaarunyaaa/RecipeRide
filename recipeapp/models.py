@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class CustomUser(User):
     pass
@@ -57,6 +58,20 @@ class Notification(models.Model):
 class Saves(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     recipe = models.ForeignKey(addrecipe, on_delete=models.CASCADE)
+
+class Rating(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(addrecipe, on_delete=models.CASCADE)
+    rating = models.DecimalField(
+        max_digits=2,  # Total number of digits (including decimal point)
+        decimal_places=1,  # Number of digits after the decimal point
+        validators=[
+            MinValueValidator(0.0),
+            MaxValueValidator(5.0),
+        ]
+    )
+    class Meta:
+        unique_together = ('recipe', 'user')
 
 
     

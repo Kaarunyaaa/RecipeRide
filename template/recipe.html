@@ -82,8 +82,21 @@
             {% endif %}
         </form>
        </div>
+       <br>
+       <div>
+        {% for i in defaultRange %}
+            <span class="fa fa-star {% if user_rating and user_rating.rating >= i %}checked{% endif %}"></span>
+        {% endfor %}
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit Rating</button>
+        </form>
+       </div>
     
 </center>
+
 
     <div class="row">
         <div class="col-2"></div>
