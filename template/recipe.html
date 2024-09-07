@@ -38,6 +38,19 @@
         padding: 10px;
         margin-bottom: 10px;
     }
+    a{
+        
+        text-decoration: none;
+        color: inherit;
+        display: inline-block;
+        font-size: 0; /* Ensures no extra space between inline-blocks */
+    }
+    .checked {
+        color: orange;
+    }
+    .fa-star {
+        font-size: 24px; /* Adjust the size of the stars */
+    }
 </style>
 <body>
     <div class="container-fluid">
@@ -56,6 +69,10 @@
                     {% endfor %}
                     </ul>
                 </center>
+                <br><br>
+                    {% if avgRate != none %}
+                        <h4>Rate: {{ avgRate }}</h4>
+                    {% endif %}
             </div>
         </div>
     </div>
@@ -83,17 +100,13 @@
         </form>
        </div>
        <br>
-       <div>
+       <div style="color: grey;">
         {% for i in defaultRange %}
-            <span class="fa fa-star {% if user_rating and user_rating.rating >= i %}checked{% endif %}"></span>
+            <a href="{% url 'rate' recipe.id i %}">
+                <span class="fa fa-star {% if user_rating and user_rating.rating >= i %}checked{% endif %}"></span>
+            </a>
         {% endfor %}
-
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit Rating</button>
-        </form>
-       </div>
+    </div>
     
 </center>
 

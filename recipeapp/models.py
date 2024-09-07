@@ -62,12 +62,10 @@ class Saves(models.Model):
 class Rating(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     recipe = models.ForeignKey(addrecipe, on_delete=models.CASCADE)
-    rating = models.DecimalField(
-        max_digits=2,  # Total number of digits (including decimal point)
-        decimal_places=1,  # Number of digits after the decimal point
+    rating = models.IntegerField(
         validators=[
-            MinValueValidator(0.0),
-            MaxValueValidator(5.0),
+            MinValueValidator(0),
+            MaxValueValidator(5),
         ]
     )
     class Meta:

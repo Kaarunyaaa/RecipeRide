@@ -5,7 +5,6 @@ from django.contrib import messages
 from .models import CustomUser, addrecipe, Comment, Notification,Follow,Saves,Rating
 from .models import UserProfile
 from django.contrib.auth.models import User
-from .forms import RatingForm
 
 # Create your views here.
 def home(request):
@@ -79,8 +78,15 @@ def recipe(request, recipe_id):
     user_rating=None
     if Rating.objects.filter(user=request.user,recipe=recipe).exists():
         user_rating=Rating.objects.get(user=request.user,recipe=recipe)
+        
+    avgRate=None
+    if Rating.objects.filter(recipe=recipe).exists():
+        rating=Rating.objects.filter(recipe=recipe)
+        rate=0
+        for i in rating:
+            rate+=i.rating
+        avgRate=round(rate/len(rating),2)
     
-    form=RatingForm()
     comments = recipe.comments.all()
     context = {
         'img':recipe.img,
@@ -90,9 +96,9 @@ def recipe(request, recipe_id):
         'comments': comments,
         'posted_by':recipe.user, 
         'saveFlag':saveFlag,
-        'RatingForm':form,
         'user_rating':user_rating,
         'defaultRange':[1,2,3,4,5],
+        'avgRate':avgRate,
     }
     return render(request, 'recipe.html', context)
 
@@ -266,6 +272,17 @@ def following(request):
     }
     return render(request, 'following.html',context)
 
+@login_required
+def rate(request,id,rate):
+    recipe=addrecipe.objects.get(id=id)
+    if Rating.objects.filter(user=request.user,recipe=recipe).exists():
+        a=Rating.objects.get(user=request.user,recipe=recipe)
+        a.rating=rate
+        a.save()
+    else:
+        Rating.objects.create(user=request.user,recipe=recipe,rating=rate)
+    return redirect('recipe',recipe.id)
+    
 
 
 
