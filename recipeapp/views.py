@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import CustomUser, addrecipe, Comment, Notification,Follow
+from .models import CustomUser, addrecipe, Comment, Notification,Follow,Saves
 from .models import UserProfile
 from django.contrib.auth.models import User
 
@@ -73,6 +73,9 @@ def recipe(request, recipe_id):
         if content:
             comment = Comment.objects.create(recipe=recipe, user=request.user, content=content)
             Notification.objects.create(user=recipe.user, comment=comment)
+            
+    saveFlag=Saves.objects.filter(user=request.user,recipe=recipe).exists()
+    
     
     comments = recipe.comments.all()
     context = {
@@ -81,9 +84,9 @@ def recipe(request, recipe_id):
         'procedure': recipe.procedure,
         'recipe': recipe,
         'comments': comments,
-        'posted_by':recipe.user,  
+        'posted_by':recipe.user, 
+        'saveFlag':saveFlag,
     }
-    
     return render(request, 'recipe.html', context)
 
 
@@ -218,3 +221,48 @@ def follow_user(request, user_id):
         else:
             Follow.objects.create(follower=request.user,followed=user)
     return redirect('profile_view',id=user)
+
+def save(request,id):
+    recipe=addrecipe.objects.get(id=id)
+    if Saves.objects.filter(user=request.user,recipe=recipe).exists():
+        Saves.objects.filter(user=request.user,recipe=recipe).delete()
+        return redirect('/recipe/'+id+'/')
+    else:
+        Saves.objects.create(user=request.user,recipe=recipe)
+        return redirect('/recipe/'+id+'/')
+    
+def view_saved(request):
+    data=[]
+    saved_data=Saves.objects.filter(user=request.user)
+    print(saved_data)
+    print(saved_data.exists())
+    for x in saved_data:
+        print(x)
+        data.append(addrecipe.objects.get(id=x.recipe_id))
+    return render(request,'view_saved.html',{'data':data})
+
+def following(request):
+    following_users = Follow.objects.filter(follower=request.user)
+    followed_accounts = []
+    for i in following_users:
+        profilePic=None
+        if UserProfile.objects.filter(user=i.followed).exists():
+            profilePic=UserProfile.objects.get(user=i.followed).profile_pic
+        t={
+            'profilePic':profilePic,
+            'userData':i.followed,
+        }
+        followed_accounts.append(t)
+    context={
+        'followed_accounts': followed_accounts,
+    }
+    return render(request, 'following.html',context)
+
+
+
+
+
+
+
+
+

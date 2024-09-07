@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Saved Recipes</h2>
+  <ul>
+    {% for recipe in saved_recipes %}
+      <li>{{ recipe.name }}</li>  <!-- Adjust this based on your recipe model's fields -->
+    {% endfor %}
+  </ul>
+{% endblock %}

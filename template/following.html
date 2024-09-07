@@ -1,0 +1,61 @@
+{% extends 'user_base.html' %}
+    {% load static %}
+    {% block title %}View{% endblock %}
+
+    {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Following</title>
+</head>
+<style>
+    /* Center the content within the body */
+    body {
+        text-align: center;
+    }
+
+    /* Center the list and remove default list styling */
+    .centered-list {
+        display: inline-block;
+        text-align: left;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Remove default list styling */
+    .centered-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .centered-list li {
+        margin: 5px 0; /* Optional: adjust the spacing between list items */
+    }
+</style>
+</head>
+<body>
+<h3>Accounts You're Following</h3>
+<div class="container mt-5"> 
+    <div class="row">
+        {% for x in followed_accounts %}
+        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div class="card">
+                <img src="{{ x.profilePic.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ x.userData }}</h5>
+                    <a href="/profile/{{ x.userData }}">
+                        <button>View Profile</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+    {% endblock %}
+</body>
+</html>

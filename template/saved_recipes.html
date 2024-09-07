@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Saved Recipes{% endblock %}
+
+{% block content %}
+    <h2>Saved Recipes</h2>
+    <ul>
+    {% for saved_recipe in saved_recipes %}
+        <li>
+            <a href="{% url 'recipe_detail' saved_recipe.recipe.id %}">
+                {{ saved_recipe.recipe.name }}
+            </a>
+        </li>
+    {% empty %}
+        <li>No recipes saved yet.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

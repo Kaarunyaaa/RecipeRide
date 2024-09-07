@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from recipeapp import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
@@ -35,6 +36,10 @@ urlpatterns = [
     path('user_recipe/<id>',views.user_recipe),
     path('profile/<id>',views.profile_view,name='profile_view'),
     path('follow/<int:user_id>/', views.follow_user, name='follow_user'),
+    path('save/<id>/', views.save,name='save'),
+    path('saved_recipe/', views.view_saved),
+    path('following/',views.following,name='following')
+    
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:

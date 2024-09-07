@@ -43,8 +43,6 @@ class Follow(models.Model):
 
     def _str_(self):
         return f"{self.follower} follows {self.followed}"
-
-    
     
 
 class Notification(models.Model):
@@ -55,3 +53,15 @@ class Notification(models.Model):
 
     def __str__(self):
         return f'Notification for {self.user.username} - Comment on {self.comment.recipe.name}'
+    
+class Saves(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(addrecipe, on_delete=models.CASCADE)
+
+
+    
+    
+
+    
+
+
