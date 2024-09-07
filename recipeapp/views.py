@@ -248,6 +248,7 @@ def following(request):
         profilePic=None
         if UserProfile.objects.filter(user=i.followed).exists():
             profilePic=UserProfile.objects.get(user=i.followed).profile_pic
+            
         t={
             'profilePic':profilePic,
             'userData':i.followed,
