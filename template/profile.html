@@ -160,8 +160,13 @@
                 <div class="col-3">
                     <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="rounded-circle" width="150" height="150">
                 </div>
-                <div class="col-9" style="margin-top: 3%;">
+                <div class="col-4" style="margin-top: 3%;">
                     <h5>User:{{ data }}</h5>
+                    <h5>Description:</h5>
+                    <h6 style="font-weight: lighter;">{{ profile.description }}</h6>
+                    
+                </div>
+                <div class="col-5" style="margin-top: 3%;">
                     <h5>Email:{{ profile.email }}</h5>
                     <h5>Ph.No:{{ profile.phone_number }}</h5>
                 </div>
