@@ -198,7 +198,7 @@ def profile_edit_view(request,id):
         'profile': profile,
         
     }
-    return render(request, 'profile.html', {'profile':profile,'dish':recipe_user,'data':recipe_of_user})
+    return render(request, 'profile_edit.html', context)
 
 def profile_view(request,id):
     # Check if the user already has a profile

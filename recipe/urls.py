@@ -40,6 +40,7 @@ urlpatterns = [
     path('saved_recipe/', views.view_saved),
     path('following/',views.following,name='following'),
     path('rate/<int:id>/<int:rate>/',views.rate,name='rate'),
+    path('profile_edit/<id>',views.profile_edit_view),
     
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

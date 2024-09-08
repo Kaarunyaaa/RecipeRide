@@ -13,7 +13,6 @@
 </head>
 <style>
     .container-fluid{
-        background-color: black;
         color: white;
     }
     .img1 {
@@ -62,40 +61,103 @@
         background-color: rgb(209, 86, 86);
         color: white;
     }
+   
+
+    .img1 {
+        width: 100%;
+        height: 95%;
+        object-fit: cover;
+        
+    }
+
+    /* Form Styling */
+    form {
+        width: 100%;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 5%;
+    }
+
+    form input[type="text"],
+    form input[type="file"],
+    form textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+    }
+
+    form input[type="submit"] {
+        background-color: #ff6f61;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    form input[type="submit"]:hover {
+        background-color: #ff4f41;
+    }
+
+    /* Form Label Styling */
+
+    h4 {
+        margin-top: 5px;
+        margin-bottom: 20px;
+        color: wheat;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 25px;
+        font-weight: lighter;
+        color: black;
+    }
+
+    /* Adjustments for small screens */
+    @media (max-width: 768px) {
+        .img1 {
+            display: none;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        .col-6 {
+            width: 100%;
+        }
+    }
     
 </style>
 <body>
     <div class="container-fluid">
         <div class="row">
+            <!-- Left Side Image -->
             <div class="col-6 p-0">
-                <img class="img1" src="{% static 'img/pancake.jpg' %}" alt="">
+                <img class="img1" src="{% static 'img/pancake.jpg' %}" alt="Pancake image">
             </div>
-            <div class="col-6">
+    
+            <!-- Right Side Form -->
+            <div class="col-6 d-flex align-items-center justify-content-center">
                 <center>
-                    <h4>Add your recipe here!</h4>
+                    <h4>Share Your Recipe!</h4>
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <label for="dname">Dish name</label>
-                        <input type="text" name="dname">
-                        <br><br>
-                        
-                        <label for="dimg">Dish image</label>
-                        <input type="file" name="dimg">
-                        <br><br>
-                        
-                        <label for="dingre">Ingredients</label>
-                        <br>
-                        <textarea id="dingre" name="dingre" rows="4" cols="30"></textarea>
-                        <br><br>
-                        
-                        <label for="dproc">Procedure</label>
-                        <br>
-                        <textarea name="dproc" rows="7" cols="40"></textarea>
-                        <br><br>
-                        
-                        <input type="submit">
+                        <input type="text" name="dname" placeholder="Enter the dish name" required>
+
+                        <input type="file" name="dimg" required>
+                        <textarea id="dingre" name="dingre" rows="4" cols="30" placeholder="List ingredients" required></textarea>
+    
+                        <textarea name="dproc" rows="7" cols="40" placeholder="Describe the procedure" required></textarea>
+    
+                        <input type="submit" value="Submit Recipe">
                     </form>
-                    <br>
                 </center>
             </div>
         </div>

@@ -146,12 +146,28 @@
             .card-body button:hover {
                 background-color: #0056b3; /* Darker color on hover */
             }
+            .details{
+                padding: 3%;
+            }
         
     </style>
 </head>
 <body>
     
     <div class="container">
+        <div class="details">
+            <div class="row">
+                <div class="col-3">
+                    <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="rounded-circle" width="150" height="150">
+                </div>
+                <div class="col-9" style="margin-top: 3%;">
+                    <h5>User:{{ data }}</h5>
+                    <h5>Email:{{ profile.email }}</h5>
+                    <h5>Ph.No:{{ profile.phone_number }}</h5>
+                </div>
+            </div>
+        </div>
+        
         <center><br><h2>Recipies of {{ data }} </h2></center>
         
         <div class="text-center mb-4">
