@@ -51,6 +51,27 @@
     .fa-star {
         font-size: 24px; /* Adjust the size of the stars */
     }
+    .fa-star-half{
+        font-size: 24px; 
+    }
+    .star-icon {
+        width: 18.5px;
+    height: 26px;
+    vertical-align: middle;
+    object-fit: contain;
+    }
+    .star-icon-flip {
+    width: 18.5px;
+    height: 26px;
+    vertical-align: middle;
+    object-fit: contain;
+    transform: scaleX(-1);
+    }
+
+    html {
+    scroll-behavior: auto !important;
+    }
+
 </style>
 <body>
     <div class="container-fluid">
@@ -73,6 +94,7 @@
                     {% if avgRate != none %}
                         <h4>Rate: {{ avgRate }}</h4>
                     {% endif %}
+                    <div id="stars" style="visibility: hidden;"></div>
             </div>
         </div>
     </div>
@@ -81,7 +103,7 @@
         <center>
             <a href="/profile/{{ posted_by }}">
                 <button class="btn btn-outline-primary mt-3">
-                    <center><i class="fa-solid fa-user"></i>   {{ posted_by }}</center>
+                    <center><i class="fa-solid fa-user"></i>  {{ posted_by }}</center>
                 </button>
             </a>
         </center>
@@ -102,11 +124,30 @@
        <br>
        <div style="color: grey;">
         {% for i in defaultRange %}
-            <a href="{% url 'rate' recipe.id i %}">
-                <span class="fa fa-star {% if user_rating and user_rating.rating >= i %}checked{% endif %}"></span>
+            <a href="{% url 'rate' recipe.id i %}" >
+                {% if user_rating and user_rating.rating >= i %}
+                    {% if i in forIfCondition %}
+                    <img src="{% static 'icons/star-se.svg' %}" alt="Star" class="star-icon" style="position: relative ;margin-right: -6.5px;">
+                    {% else %}
+                    <img src="{% static 'icons/star-se.svg' %}" alt="Star" class="star-icon-flip" style="position: relative;">
+                    {% endif %}
+                {% else %}
+                    {% if i in forIfCondition %}
+                    <img src="{% static 'icons/star-un.svg' %}" alt="Star" class="star-icon" style="position: relative; margin-right: -6.5px;">
+                    {% else %}
+                    <img src="{% static 'icons/star-un.svg' %}" alt="Star" class="star-icon-flip" style="position: relative;">
+                    {% endif %}
+                {% endif %}
             </a>
         {% endfor %}
-    </div>
+        </div>
+        <br>
+        <a href="{% url 'rate' recipe.id 0 %}" style="font-size: 10px;"><p>clear</p></a>
+    <!--<div style="color: grey; display: inline-block;">
+        <span class="fa-solid fa-star-half" style="position: relative; margin-right: -32px;"></span>
+        <span class="fa-solid fa-star-half fa-flip-horizontal" style="position: relative;"></span>
+        <span class="fa fa-star {% if user_rating and user_rating.rating >= i %}checked{% endif %}"></span>
+    </div>-->
     
 </center>
 

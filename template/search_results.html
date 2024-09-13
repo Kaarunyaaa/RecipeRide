@@ -1,0 +1,56 @@
+{% extends 'user_base.html' %}
+    {% load static %}
+    {% block title %}View{% endblock %}
+
+    {% block content %}
+
+<head>
+</head>
+<style>
+    a{
+        text-decoration: none;
+    }
+    .card {
+    transition: transform 0.3s ease; /* Smooth transition for the transform property */
+    height: 269px;
+    width: 304px;
+    }
+    .card-img-top {
+        height: 203px; /* Fixed height for the image */
+        width: 304px;
+        object-fit: cover; /* Ensures the image covers the container */
+    }
+    .card:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    }
+</style>
+    <body>
+        {% if results %}
+                <center>
+                <h3 style="padding-left: 15px;">Search Result for "{{ query }}" </h3>
+                </center>
+                <div class="container mt-5"> 
+                    <div class="row">
+                            {% for x in results %}
+                                <div style="margin-left: 20px;margin-right: 20px;" class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                                    <a href="/recipe/{{ x.id }}">
+                                    <div class="card">
+                                            <img src="{{ x.img.url }}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ x.name }}</h5>
+                                        </div>
+                                    </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                    </div>
+                </div>
+        {% else %}
+        <center>
+            <h3 style="padding-top: 30px;">No results found for "{{query}}"</h3>
+        </center>
+        {% endif %}
+        </body>
+
+
+    {% endblock %}

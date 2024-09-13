@@ -1,0 +1,213 @@
+{% extends 'user_base.html' %}
+    {% load static %}
+    {% block title %}View{% endblock %}
+
+    {% block content %}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<style>
+
+.add-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Make sure it stays on top */
+    text-decoration: none;
+}
+
+.add-button i {
+    font-size: 24px;
+    color: grey;
+}
+
+.add-button:hover {
+    background-color: #f8f9fa; /* Light grey background on hover */
+    cursor: pointer;
+}
+
+
+.search-bar button {
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+}
+
+.search-bar button i {
+    color: #6c757d; /* Muted gray for the default state */
+    transition: color 0.3s ease; /* Smooth transition for hover */
+}
+
+.search-bar button i:hover {
+    color: #007bff; /* Bright blue on hover for better contrast */
+}
+
+    .search-container {
+        text-align: center;
+        margin-top: 50px;
+    }
+    .search-bar {
+        width: 50%;
+        max-width: 600px;
+        display: flex;
+        justify-content: center;
+        padding-bottom: 30px;
+    }
+    .search-bar input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    a{
+        text-decoration: none;
+    }
+    .card {
+    transition: transform 0.3s ease; /* Smooth transition for the transform property */
+    height: 269px;
+    }
+    .card-img-top {
+        height: 203px; /* Fixed height for the image */
+        object-fit: cover; /* Ensures the image covers the container */
+    }
+    .card:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    }
+    .viewButton{
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        justify-items: center;
+        border: none; 
+        background-color: transparent;
+
+    }
+    .viewButton i{
+        color: gray;
+        font-size: 18px;
+    }
+    
+</style>
+    <body>
+        <center>
+            <div class="search-container">
+                <center>
+                <form action="{% url 'search_recipes' %}" method="get" class="search-bar">
+                    <input type="text" name="query" placeholder="Enter recipe name..." required>
+                    <button type="submit" class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                </center>
+            </div>
+        </center>
+
+        {% if recommendedPosts != none %}
+        <center>
+        <h3 style="padding-left: 15px;">Recommended recipes</h3>
+        </center>
+        <div class="container mt-5"> 
+            <div class="row">
+                    {% for x in recommendedPosts %}
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <a href="/recipe/{{ x.recipe.id }}">
+                            <div class="card">
+                                    <img src="{{ x.recipe.img.url }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ x.recipe.name }}</h5>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <center>
+            <h3 style="padding-left: 15px;">Popular recipes</h3>
+            </center>
+            <div class="container mt-5"> 
+                <div class="row">
+                        {% for x in popular %}
+                            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                                <a href="/recipe/{{ x.id }}">
+                                <div class="card">
+                                        <img src="{{ x.img.url }}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ x.name }}</h5>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                </div>
+            </div>
+        
+       
+
+        <center>
+            <h3 style="padding-left: 15px;">Top Rated recipes</h3>
+            </center>
+            <div class="container mt-5"> 
+                <div class="row">
+                        {% for x in topRated %}
+                            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                                <a href="/recipe/{{ x.id }}">
+                                <div class="card">
+                                        <img src="{{ x.img.url }}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ x.name }}</h5>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                </div>
+            </div>
+
+
+            
+                <div class="container">
+                    <h3 style="padding-top:2%;display: inline-block;">All recipes</h3>
+                <a  href="/view" ><button class="viewButton"><i style="padding-bottom:5px;" class="fa-solid fa-greater-than"></i></button></a>
+                </div>
+                
+                <div class="container mt-5"> 
+                    <div class="row">
+                            {% for x in allPost %}
+                                <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                                    <a href="/recipe/{{ x.id }}">
+                                    <div class="card">
+                                            <img src="{{ x.img.url }}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ x.name }}</h5>
+                                        </div>
+                                    </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                    </div>
+                </div>
+
+            <a href="/add" class="add-button">
+                <i class="fas fa-plus"></i>
+            </a>
+        
+        </body>
+
+
+    {% endblock %}

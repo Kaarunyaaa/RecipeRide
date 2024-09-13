@@ -5,6 +5,10 @@ from django.contrib import messages
 from .models import CustomUser, addrecipe, Comment, Notification,Follow,Saves,Rating
 from .models import UserProfile
 from django.contrib.auth.models import User
+from .modules import recommend
+
+import collections
+from fuzzywuzzy import process
 
 # Create your views here.
 def home(request):
@@ -21,7 +25,7 @@ def login1(request):
         user = authenticate(username=username, password=password1)
         if user is not None:
             login(request, user)
-            return redirect('/view')
+            return redirect('/home')
         else:
             messages.error(request, 'Invalid login credentials')
     return render(request, 'login.html')
@@ -88,6 +92,7 @@ def recipe(request, recipe_id):
         avgRate=round(rate/len(rating),2)
     
     comments = recipe.comments.all()
+    num = [i * 0.5 for i in range(1,11)]
     context = {
         'img':recipe.img,
         'ingredients': recipe.ingredients,
@@ -97,7 +102,8 @@ def recipe(request, recipe_id):
         'posted_by':recipe.user, 
         'saveFlag':saveFlag,
         'user_rating':user_rating,
-        'defaultRange':[1,2,3,4,5],
+        'defaultRange':num,
+        'forIfCondition':[0.5, 1.5, 2.5, 3.5, 4.5],
         'avgRate':avgRate,
     }
     return render(request, 'recipe.html', context)
@@ -277,11 +283,90 @@ def rate(request,id,rate):
     recipe=addrecipe.objects.get(id=id)
     if Rating.objects.filter(user=request.user,recipe=recipe).exists():
         a=Rating.objects.get(user=request.user,recipe=recipe)
-        a.rating=rate
-        a.save()
+        if rate == '0':
+            a.delete()
+        else:
+            a.rating=rate
+            a.save()
     else:
-        Rating.objects.create(user=request.user,recipe=recipe,rating=rate)
-    return redirect('recipe',recipe.id)
+        if rate!='0':
+            Rating.objects.create(user=request.user,recipe=recipe,rating=rate)
+    recommend.setZScoreParameters(request.user)
+    return redirect(f'/recipe/{recipe.id}#stars')
+
+def recommender(request):
+    if not Rating.objects.filter(user=request.user).exists():
+        return None
+    allUserRatings=Rating.objects.filter(user=request.user)
+    d=collections.defaultdict(int)
+    u=set()
+    for i in allUserRatings:
+        othersRating = Rating.objects.filter(recipe = i.recipe)
+        for j in othersRating:
+            if j.user != request.user:
+                if j.user not in u:
+                    u.add(j.user)
+                if abs(j.rating - i.rating) == 0.0:
+                    d[j.user]+=5
+                elif abs(j.rating - i.rating) == 0.5:
+                    d[j.user]+=3.5
+                elif abs(j.rating - i.rating) == 1.0:
+                    d[j.user]+=2
+                elif abs(j.rating - i.rating) == 1.5:
+                    d[j.user]+=0.5
+                elif abs(j.rating - i.rating) == 2.0:
+                    d[j.user]+=0
+                elif abs(j.rating - i.rating) == 2.5:
+                    d[j.user]-=0.5
+                elif abs(j.rating - i.rating) == 3.0:
+                    d[j.user]-=2.0
+                elif abs(j.rating - i.rating) == 3.5:
+                    d[j.user]-=3.5
+                elif abs(j.rating - i.rating) >= 4.0:
+                    d[j.user]-=5.0
+    l=[]
+    for i in u:
+        l.append({'u':i,'score':d[i],})
+    recommend.recommendedPosts(request.user)
+    return render(request,'temp.html',{'userScore':d, 'l':l,})
+
+def recommendationPage(request):
+    recommendedposts=recommend.recommendedPosts(request.user)
+    popular=recommend.popular()
+    topRated=recommend.topRated()
+    allPost=addrecipe.objects.all()
+    
+    context={
+        'recommendedPosts' : recommendedposts,
+        'popular':popular,
+        'topRated':topRated,
+        'allPost':allPost[0:4],
+    }
+    return render(request,'recommendationPage.html',context)
+    
+def search_recipes(request):
+    query = request.GET.get('query', '')
+    if query:
+        # Get all recipe names
+        recipes = addrecipe.objects.all()
+        recipe_names = [recipe.name for recipe in recipes]
+        
+        # Find best matches
+        matches = process.extract(query, recipe_names, limit=5)
+        print(matches)
+        results=[]
+        for name,score in matches:
+            if score>60:
+                try:
+                    t=addrecipe.objects.get(name=name)
+                    results.append(t)
+                except:
+                    for i in addrecipe.objects.filter(name=name):
+                        results.append(i)
+    else:
+        results = []
+    return render(request, 'search_results.html', {'results': results, 'query': query})
+                
     
 
 

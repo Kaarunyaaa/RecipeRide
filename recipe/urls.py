@@ -39,9 +39,11 @@ urlpatterns = [
     path('save/<id>/', views.save,name='save'),
     path('saved_recipe/', views.view_saved),
     path('following/',views.following,name='following'),
-    path('rate/<int:id>/<int:rate>/',views.rate,name='rate'),
+    path('rate/<int:id>/<rate>/',views.rate,name='rate'),
     path('profile_edit/<id>',views.profile_edit_view),
-    
+    path('recommender/',views.recommender,name='recommender'),
+    path('home/',views.recommendationPage,name='rp'),
+    path('search/', views.search_recipes, name='search_recipes'),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:

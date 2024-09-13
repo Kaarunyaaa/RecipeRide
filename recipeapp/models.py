@@ -62,14 +62,21 @@ class Saves(models.Model):
 class Rating(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     recipe = models.ForeignKey(addrecipe, on_delete=models.CASCADE)
-    rating = models.IntegerField(
+    rating = models.DecimalField(
+        max_digits=2,  # Total digits (including decimals)
+        decimal_places=1,  # Digits after the decimal point
         validators=[
-            MinValueValidator(0),
-            MaxValueValidator(5),
+            MinValueValidator(0.5),
+            MaxValueValidator(5.0),
         ]
     )
     class Meta:
         unique_together = ('recipe', 'user')
+
+class NormalizedRatingParameters(models.Model):
+    user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    std=models.FloatField()
+    mean=models.FloatField()
 
 
     

@@ -1,0 +1,80 @@
+{% extends 'user_base.html' %}
+    {% load static %}
+    {% block title %}View{% endblock %}
+
+    {% block content %}
+
+</head>
+<style>
+    .search-container {
+        text-align: center;
+        margin-top: 50px;
+    }
+    .search-bar {
+        width: 50%;
+        max-width: 600px;
+        display: flex;
+        justify-content: center;
+    }
+    .search-bar input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .search-bar button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .search-bar button:hover {
+        background-color: #0056b3;
+    }
+
+    a{
+        text-decoration: none;
+    }
+</style>
+</head>
+    <body>
+        <center>
+        <h3 style="padding-left: 15px;">Higher the score, Similar the Taste</h3>
+        </center>
+        <div class="container mt-5"> 
+            <div class="row">
+                {% for x in l %}
+                
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                    <a href="/profile/{{ x.u }}">
+                    <div class="card">
+                    <h1 style="padding-left: 15px;">{{ x.score }}</h1>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">{{ x.u }}</h5>
+                        </div>
+                    </div>
+                </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <center>
+        <div class="search-container">
+            <h1>Search for Recipes</h1>
+            <center>
+            <form action="{% url 'search_recipes' %}" method="get" class="search-bar">
+                <input type="text" name="query" placeholder="Enter recipe name..." required>
+                <button type="submit">Search</button>
+            </form>
+        </center>
+        </div>
+    </center>
+        </body>
+
+
+    {% endblock %}
